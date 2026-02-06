@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { taskService, userService } from '../services/apiService';
 import {
   createTaskStart,
@@ -9,6 +9,7 @@ import {
   createTaskFailure,
 } from '../redux/slices/taskSlice';
 import { fetchRegularUsersSuccess } from '../redux/slices/userSlice';
+import './FormScreen.css';
 
 const TaskCreate = () => {
   const { id } = useParams();
@@ -88,109 +89,119 @@ const TaskCreate = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <Row className="justify-content-center">
-        <Col md={8}>
-          <Card className="shadow">
-            <Card.Header className="bg-secondary text-white">
-              <h3 className="mb-0">Create New Task</h3>
-            </Card.Header>
-            <Card.Body>
-              {(error || validationError) && (
-                <Alert variant="danger">{error || validationError}</Alert>
+    <Container fluid className="form-screen">
+      <div className="form-container">
+        <div className="form-header">
+          <button className="back-link" onClick={() => navigate(-1)}>
+            ← Back
+          </button>
+          <h1 className="form-title">Create Task</h1>
+          <p className="form-subtitle">Add a new task and assign it to a team member</p>
+        </div>
+
+        {(error || validationError) && (
+          <Alert variant="danger" className="error-alert">
+            {error || validationError}
+          </Alert>
+        )}
+
+        <Form onSubmit={handleSubmit} className="modern-form">
+          <Form.Group className="form-field">
+            <Form.Label className="field-label">
+              Task Name <span className="required">*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="task_name"
+              value={formData.task_name}
+              onChange={handleChange}
+              className="field-input"
+              placeholder="Enter task name"
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="form-field">
+            <Form.Label className="field-label">Task Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={4}
+              name="task_description"
+              value={formData.task_description}
+              onChange={handleChange}
+              className="field-input"
+              placeholder="Enter task description (optional)"
+            />
+          </Form.Group>
+
+          <Form.Group className="form-field">
+            <Form.Label className="field-label">Assign User</Form.Label>
+            <Form.Select
+              name="user_assigned"
+              value={formData.user_assigned}
+              onChange={handleChange}
+              className="field-input"
+            >
+              <option value="">Select a user (optional)</option>
+              {availableUsers.map((availableUser) => (
+                <option key={availableUser.id} value={availableUser.id}>
+                  {availableUser.first_name} {availableUser.last_name} ({availableUser.email}) - {availableUser.role}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Text className="text-muted" style={{ fontSize: '13px', marginTop: '6px', display: 'block' }}>
+              {user?.role === 'manager' && 'As a manager, you can only assign tasks to regular users.'}
+              {user?.role === 'admin' && 'As an admin, you can assign tasks to managers and users.'}
+            </Form.Text>
+          </Form.Group>
+
+          <div className="form-row">
+            <Form.Group className="form-field">
+              <Form.Label className="field-label">
+                Start Date <span className="required">*</span>
+              </Form.Label>
+              <Form.Control
+                type="date"
+                name="start_date"
+                value={formData.start_date}
+                onChange={handleChange}
+                className="field-input"
+                required
+              />
+            </Form.Group>
+            
+            <Form.Group className="form-field">
+              <Form.Label className="field-label">
+                End Date <span className="required">*</span>
+              </Form.Label>
+              <Form.Control
+                type="date"
+                name="end_date"
+                value={formData.end_date}
+                onChange={handleChange}
+                className="field-input"
+                required
+              />
+            </Form.Group>
+          </div>
+
+          <div className="form-actions">
+            <Button className="cancel-btn" onClick={() => navigate(-1)}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading} className="submit-btn">
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2"></span>
+                  Creating...
+                </>
+              ) : (
+                'Create Task'
               )}
-
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Label>
-                    Task Name <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="task_name"
-                    value={formData.task_name}
-                    onChange={handleChange}
-                    placeholder="Enter task name"
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Task Description</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    name="task_description"
-                    value={formData.task_description}
-                    onChange={handleChange}
-                    placeholder="Enter task description (optional)"
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Assign User</Form.Label>
-                  <Form.Select
-                    name="user_assigned"
-                    value={formData.user_assigned}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select a user (optional)</option>
-                    {availableUsers.map((availableUser) => (
-                      <option key={availableUser.id} value={availableUser.id}>
-                        {availableUser.first_name} {availableUser.last_name} ({availableUser.email}) - {availableUser.role}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    {user?.role === 'manager' && 'As a manager, you can only assign tasks to regular users.'}
-                    {user?.role === 'admin' && 'As an admin, you can assign tasks to managers and users.'}
-                  </Form.Text>
-                </Form.Group>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        Start Date <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="start_date"
-                        value={formData.start_date}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        End Date <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="end_date"
-                        value={formData.end_date}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <div className="d-flex justify-content-between mt-4">
-                  <Button variant="secondary" onClick={() => navigate(`/projects/${id}`)}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit" disabled={loading}>
-                    {loading ? 'Creating...' : 'Create Task'}
-                  </Button>
-                </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+            </Button>
+          </div>
+        </Form>
+      </div>
     </Container>
   );
 };

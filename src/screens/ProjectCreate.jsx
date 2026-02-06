@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Container, Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { projectService, userService } from '../services/apiService';
 import {
   createProjectStart,
@@ -9,6 +9,7 @@ import {
   createProjectFailure,
 } from '../redux/slices/projectSlice';
 import { fetchManagersSuccess } from '../redux/slices/userSlice';
+import './FormScreen.css';
 
 const ProjectCreate = () => {
   const dispatch = useDispatch();
@@ -82,108 +83,118 @@ const ProjectCreate = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <Row className="justify-content-center">
-        <Col md={8}>
-          <Card className="shadow">
-            <Card.Header className="bg-primary text-white">
-              <h3 className="mb-0">Create New Project</h3>
-            </Card.Header>
-            <Card.Body>
-              {(error || validationError) && (
-                <Alert variant="danger">{error || validationError}</Alert>
+    <Container fluid className="form-screen">
+      <div className="form-container">
+        <div className="form-header">
+          <button className="back-link" onClick={() => navigate('/dashboard')}>
+            ← Back
+          </button>
+          <h1 className="form-title">Create Project</h1>
+          <p className="form-subtitle">Set up a new project and assign a manager</p>
+        </div>
+
+        {(error || validationError) && (
+          <Alert variant="danger" className="error-alert">
+            {error || validationError}
+          </Alert>
+        )}
+
+        <Form onSubmit={handleSubmit} className="modern-form">
+          <Form.Group className="form-field">
+            <Form.Label className="field-label">
+              Project Name <span className="required">*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="project_name"
+              value={formData.project_name}
+              onChange={handleChange}
+              className="field-input"
+              placeholder="Enter project name"
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="form-field">
+            <Form.Label className="field-label">Project Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={4}
+              name="project_description"
+              value={formData.project_description}
+              onChange={handleChange}
+              className="field-input"
+              placeholder="Enter project description (optional)"
+            />
+          </Form.Group>
+
+          <Form.Group className="form-field">
+            <Form.Label className="field-label">
+              Assign Manager <span className="required">*</span>
+            </Form.Label>
+            <Form.Select
+              name="user_assigned"
+              value={formData.user_assigned}
+              onChange={handleChange}
+              className="field-input"
+              required
+            >
+              <option value="">Select a manager</option>
+              {managers.map((manager) => (
+                <option key={manager.id} value={manager.id}>
+                  {manager.first_name} {manager.last_name} ({manager.email})
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
+          <div className="form-row">
+            <Form.Group className="form-field">
+              <Form.Label className="field-label">
+                Start Date <span className="required">*</span>
+              </Form.Label>
+              <Form.Control
+                type="date"
+                name="start_date"
+                value={formData.start_date}
+                onChange={handleChange}
+                className="field-input"
+                required
+              />
+            </Form.Group>
+            
+            <Form.Group className="form-field">
+              <Form.Label className="field-label">
+                End Date <span className="required">*</span>
+              </Form.Label>
+              <Form.Control
+                type="date"
+                name="end_date"
+                value={formData.end_date}
+                onChange={handleChange}
+                className="field-input"
+                required
+              />
+            </Form.Group>
+          </div>
+
+          <div className="form-actions">
+            <Button className="cancel-btn" onClick={() => navigate('/dashboard')}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading} className="submit-btn">
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2"></span>
+                  Creating...
+                </>
+              ) : (
+                'Create Project'
               )}
-
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Label>
-                    Project Name <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="project_name"
-                    value={formData.project_name}
-                    onChange={handleChange}
-                    placeholder="Enter project name"
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Project Description</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    name="project_description"
-                    value={formData.project_description}
-                    onChange={handleChange}
-                    placeholder="Enter project description (optional)"
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>
-                    Assign Manager <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Form.Select
-                    name="user_assigned"
-                    value={formData.user_assigned}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">Select a manager</option>
-                    {managers.map((manager) => (
-                      <option key={manager.id} value={manager.id}>
-                        {manager.first_name} {manager.last_name} ({manager.email})
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        Start Date <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="start_date"
-                        value={formData.start_date}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        End Date <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="end_date"
-                        value={formData.end_date}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <div className="d-flex justify-content-between mt-4">
-                  <Button variant="secondary" onClick={() => navigate('/dashboard')}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit" disabled={loading}>
-                    {loading ? 'Creating...' : 'Create Project'}
-                  </Button>
-                </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+            </Button>
+          </div>
+        </Form>
+      </div>
     </Container>
   );
 };

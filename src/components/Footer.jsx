@@ -1,15 +1,16 @@
-import React from 'react'
-import { Container, Row, Col } from "react-bootstrap";
+import React from 'react';
+import './Footer.css';
+
 function Footer() {
   return (
-    <footer>
-        <Container>
-            <Row>
-                <Col className="text-center py-3">Copyright &copy; {new Date().getFullYear()} All rights reserved.</Col>
-            </Row>
-        </Container>
+    <footer className="app-footer">
+      <div className="footer-content">
+        <p className="footer-text">
+          © {new Date().getFullYear()} TaskFlow. Project Management System.
+        </p>
+      </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

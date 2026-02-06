@@ -1,12 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
 import { logout } from "../redux/slices/authSlice";
+import './Header.css';
 
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
@@ -18,43 +20,82 @@ function Header() {
     return null;
   }
 
+  const isActive = (path) => location.pathname === path;
+
   return (
     <header>
-      <Navbar expand="lg" bg="primary" variant="dark">
-        <Container fluid>
-          <Navbar.Brand onClick={() => navigate("/dashboard")} style={{ cursor: "pointer" }}>
-            Project Management
+      <Navbar className="custom-navbar" expand="lg">
+        <Container fluid className="navbar-container">
+          <Navbar.Brand onClick={() => navigate("/dashboard")} className="brand-logo">
+            <span className="logo-icon">⚡</span>
+            <span className="logo-text">TaskFlow</span>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link onClick={() => navigate("/dashboard")}>Dashboard</Nav.Link>
-              {user?.role === "admin" && (
-                <>
-                  <Nav.Link onClick={() => navigate("/projects/create")}>
-                    Create Project
-                  </Nav.Link>
-                  <Nav.Link onClick={() => navigate("/users")}>Users</Nav.Link>
-                  <Nav.Link onClick={() => navigate("/users/create")}>
-                    Create User
-                  </Nav.Link>
-                </>
+          
+          <Navbar.Toggle aria-controls="navbar-content" />
+          
+          <Navbar.Collapse id="navbar-content">
+            <Nav className="nav-links">
+              <Nav.Link 
+                onClick={() => navigate("/dashboard")} 
+                className={isActive('/') || isActive('/dashboard') ? 'nav-item active' : 'nav-item'}
+              >
+                Projects
+              </Nav.Link>
+              
+              {(user?.role === 'admin' || user?.role === 'manager') && (
+                <Nav.Link 
+                  onClick={() => navigate("/tasks/create")} 
+                  className={isActive('/tasks/create') ? 'nav-item active' : 'nav-item'}
+                >
+                  New Task
+                </Nav.Link>
+              )}
+              
+              {user?.role === 'admin' && (
+                <Nav.Link 
+                  onClick={() => navigate("/users")} 
+                  className={isActive('/users') ? 'nav-item active' : 'nav-item'}
+                >
+                  Team
+                </Nav.Link>
               )}
             </Nav>
-            <Nav>
-              <NavDropdown
-                title={`${user?.first_name || "User"} (${user?.role || ""})`}
-                id="user-dropdown"
-                align="end"
-              >
-                <NavDropdown.Item disabled>
-                  {user?.email}
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
+            
+            <Nav className="user-section">
+              {user?.role === 'admin' && (
+                <button className="new-project-btn" onClick={() => navigate('/projects/create')}>
+                  <span className="btn-plus">+</span>
+                </button>
+              )}
+              
+              <Dropdown align="end">
+                <Dropdown.Toggle className="user-dropdown" id="user-dropdown">
+                  <div className="user-avatar">
+                    {(user?.first_name || user?.username || "U").charAt(0).toUpperCase()}
+                  </div>
+                  <div className="user-info">
+                    <span className="user-name">{user?.first_name || user?.username}</span>
+                    <span className="user-role">{user?.role}</span>
+                  </div>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu className="user-menu">
+                  {user?.role === 'admin' && (
+                    <>
+                      <Dropdown.Item onClick={() => navigate('/projects/create')}>
+                        New Project
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={() => navigate('/users/create')}>
+                        Add User
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                    </>
+                  )}
+                  <Dropdown.Item onClick={handleLogout} className="logout-item">
+                    Sign Out
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>

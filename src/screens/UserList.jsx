@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Container, Table, Button, Badge, Row, Col } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import { userService } from '../services/apiService';
 import {
   fetchUsersStart,
   fetchUsersSuccess,
   fetchUsersFailure,
 } from '../redux/slices/userSlice';
+import './UserList.css';
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -28,69 +29,83 @@ const UserList = () => {
     fetchUsers();
   }, [dispatch]);
 
-  const getRoleBadge = (role) => {
-    const roleMap = {
-      admin: 'danger',
-      manager: 'primary',
-      user: 'success',
+  const getRoleStyle = (role) => {
+    const styles = {
+      admin: { bg: '#fef2f2', color: '#dc2626', border: '#fecaca' },
+      manager: { bg: '#eff6ff', color: '#2563eb', border: '#bfdbfe' },
+      user: { bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' },
     };
-    return <Badge bg={roleMap[role?.toLowerCase()] || 'secondary'}>{role}</Badge>;
+    return styles[role?.toLowerCase()] || styles.user;
   };
 
   if (loading) {
     return (
-      <Container className="mt-4">
-        <div className="text-center">Loading users...</div>
+      <Container fluid className="users-container">
+        <div className="loading-spinner">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
       </Container>
     );
   }
 
   if (error) {
     return (
-      <Container className="mt-4">
-        <div className="alert alert-danger">{error}</div>
+      <Container fluid className="users-container">
+        <div className="alert alert-danger m-4">{error}</div>
       </Container>
     );
   }
 
   return (
-    <Container className="mt-4">
-      <Row className="mb-4">
-        <Col>
-          <h2>User Management</h2>
-        </Col>
-        <Col className="text-end">
-          <Button variant="primary" onClick={() => navigate('/users/create')}>
-            Create User
+    <Container fluid className="users-container">
+      <div className="users-header">
+        <div className="header-content">
+          <div>
+            <h1 className="users-title">Team</h1>
+            <p className="users-subtitle">{users.length} {users.length === 1 ? 'member' : 'members'}</p>
+          </div>
+          <Button className="create-btn" onClick={() => navigate('/users/create')}>
+            <span className="btn-icon">+</span> Add Member
           </Button>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
       {users.length === 0 ? (
-        <div className="alert alert-info">No users found.</div>
+        <div className="empty-state">
+          <div className="empty-icon">👥</div>
+          <h3>No team members yet</h3>
+          <p>Add your first team member to get started</p>
+          <Button className="create-btn mt-3" onClick={() => navigate('/users/create')}>
+            <span className="btn-icon">+</span> Add Member
+          </Button>
+        </div>
       ) : (
-        <Table striped bordered hover responsive>
-          <thead className="table-dark">
-            <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={user.id}>
-                <td>{index + 1}</td>
-                <td>{user.first_name}</td>
-                <td>{user.last_name}</td>
-                <td>{user.email}</td>
-                <td>{getRoleBadge(user.role)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <div className="users-list">
+          {users.map((member, index) => {
+            const roleStyle = getRoleStyle(member.role);
+            return (
+              <div key={member.id} className="user-card">
+                <div className="user-avatar-large">
+                  {member.first_name?.charAt(0).toUpperCase() || member.username?.charAt(0).toUpperCase() || 'U'}
+                </div>
+                <div className="user-details">
+                  <h3 className="user-name">{member.first_name} {member.last_name}</h3>
+                  <p className="user-email">{member.email}</p>
+                  <p className="user-username">@{member.username}</p>
+                </div>
+                <div className="user-role-badge" style={{
+                  backgroundColor: roleStyle.bg,
+                  color: roleStyle.color,
+                  border: `1px solid ${roleStyle.border}`
+                }}>
+                  {member.role}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       )}
     </Container>
   );

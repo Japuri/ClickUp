@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Container, Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { authService } from '../services/apiService';
 import { loginStart, loginSuccess, loginFailure } from '../redux/slices/authSlice';
+import './Login.css';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,52 +38,71 @@ const Login = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
-        <Col md={5}>
-          <Card className="shadow">
-            <Card.Header className="bg-primary text-white text-center">
-              <h3 className="mb-0">Project Management System</h3>
-            </Card.Header>
-            <Card.Body className="p-4">
-              <h4 className="text-center mb-4">Login</h4>
+    <div className="login-page">
+      <div className="login-container">
+        <div className="login-card">
+          <div className="login-header">
+            <div className="login-logo">
+              <span className="logo-icon">⚡</span>
+              <span className="logo-text">TaskFlow</span>
+            </div>
+            <h1 className="login-title">Welcome back</h1>
+            <p className="login-subtitle">Sign in to your workspace</p>
+          </div>
 
-              {error && <Alert variant="danger">{error}</Alert>}
+          <Form onSubmit={handleSubmit} className="login-form">
+            {error && (
+              <Alert variant="danger" className="error-alert">
+                {error}
+              </Alert>
+            )}
 
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="username"
-                    value={credentials.username}
-                    onChange={handleChange}
-                    placeholder="Enter username"
-                    required
-                  />
-                </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label className="form-label">Username</Form.Label>
+              <Form.Control
+                type="text"
+                name="username"
+                value={credentials.username}
+                onChange={handleChange}
+                required
+                className="form-input"
+                placeholder="Enter your username"
+                autoComplete="username"
+              />
+            </Form.Group>
 
-                <Form.Group className="mb-4">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    value={credentials.password}
-                    onChange={handleChange}
-                    placeholder="Enter password"
-                    required
-                  />
-                </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label className="form-label">Password</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleChange}
+                required
+                className="form-input"
+                placeholder="Enter your password"
+                autoComplete="current-password"
+              />
+            </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100" disabled={loading}>
-                  {loading ? 'Logging in...' : 'Login'}
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="login-button"
+            >
+              {loading ? (
+                <span className="spinner-border spinner-border-sm me-2"></span>
+              ) : null}
+              {loading ? 'Signing in...' : 'Sign in'}
+            </Button>
+          </Form>
+        </div>
+
+        <div className="login-footer">
+          <p>Project Management System</p>
+        </div>
+      </div>
+    </div>
   );
 };
 

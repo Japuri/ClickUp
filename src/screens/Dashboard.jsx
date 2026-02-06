@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Table, Collapse, Button, Badge, Container, Row, Col } from 'react-bootstrap';
+import { Collapse, Button, Badge, Container, Row, Col, Card } from 'react-bootstrap';
 import { projectService } from '../services/apiService';
 import {
   fetchProjectsStart,
   fetchProjectsSuccess,
   fetchProjectsFailure,
 } from '../redux/slices/projectSlice';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -37,132 +38,153 @@ const Dashboard = () => {
     }));
   };
 
-  const getStatusBadge = (status) => {
-    const statusMap = {
-      CREATED: 'secondary',
-      'IN PROGRESS': 'primary',
-      OVERDUE: 'danger',
-      COMPLETED: 'success',
+  const getStatusStyle = (status) => {
+    const styles = {
+      CREATED: { bg: '#e3f2fd', color: '#1976d2', border: '#90caf9' },
+      'IN PROGRESS': { bg: '#fff3e0', color: '#f57c00', border: '#ffb74d' },
+      OVERDUE: { bg: '#ffebee', color: '#d32f2f', border: '#ef5350' },
+      COMPLETED: { bg: '#e8f5e9', color: '#388e3c', border: '#66bb6a' },
     };
-    return <Badge bg={statusMap[status] || 'secondary'}>{status}</Badge>;
+    return styles[status] || styles.CREATED;
   };
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
+    return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   if (loading) {
     return (
-      <Container className="mt-4">
-        <div className="text-center">Loading projects...</div>
+      <Container fluid className="dashboard-container">
+        <div className="loading-spinner">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
       </Container>
     );
   }
 
   if (error) {
     return (
-      <Container className="mt-4">
-        <div className="alert alert-danger">{error}</div>
+      <Container fluid className="dashboard-container">
+        <div className="alert alert-danger m-4">{error}</div>
       </Container>
     );
   }
 
   return (
-    <Container className="mt-4">
-      <Row className="mb-4">
-        <Col>
-          <h2>Project Dashboard</h2>
-        </Col>
-        {user?.role === 'admin' && (
-          <Col className="text-end">
-            <Button variant="primary" onClick={() => navigate('/projects/create')}>
-              Create Project
+    <Container fluid className="dashboard-container">
+      <div className="dashboard-header">
+        <div className="header-content">
+          <div>
+            <h1 className="dashboard-title">Projects</h1>
+            <p className="dashboard-subtitle">{projects.length} {projects.length === 1 ? 'project' : 'projects'}</p>
+          </div>
+          {user?.role === 'admin' && (
+            <Button className="create-btn" onClick={() => navigate('/projects/create')}>
+              <span className="btn-icon">+</span> New Project
             </Button>
-          </Col>
-        )}
-      </Row>
+          )}
+        </div>
+      </div>
 
       {projects.length === 0 ? (
-        <div className="alert alert-info">No projects found.</div>
+        <div className="empty-state">
+          <div className="empty-icon">📋</div>
+          <h3>No projects yet</h3>
+          <p>Create your first project to get started</p>
+          {user?.role === 'admin' && (
+            <Button className="create-btn mt-3" onClick={() => navigate('/projects/create')}>
+              <span className="btn-icon">+</span> Create Project
+            </Button>
+          )}
+        </div>
       ) : (
-        <Table hover bordered>
-          <thead className="table-dark">
-            <tr>
-              <th>Project Name</th>
-              <th>Status</th>
-              <th>Hours Consumed</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {projects.map((project) => (
-              <React.Fragment key={project.id}>
-                <tr>
-                  <td>
-                    <Button
-                      variant="link"
-                      className="text-decoration-none text-start p-0"
-                      onClick={() => toggleAccordion(project.id)}
+        <div className="projects-list">
+          {projects.map((project) => {
+            const statusStyle = getStatusStyle(project.status);
+            const isOpen = openAccordions[project.id];
+            
+            return (
+              <Card key={project.id} className="project-card">
+                <div className="project-header" onClick={() => toggleAccordion(project.id)}>
+                  <div className="project-main">
+                    <span className="expand-icon">{isOpen ? '▼' : '►'}</span>
+                    <div className="project-info">
+                      <h3 className="project-name">{project.project_name}</h3>
+                      <p className="project-dates">
+                        {formatDate(project.start_date)} - {formatDate(project.end_date)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="project-meta">
+                    <div className="status-badge" style={{ 
+                      backgroundColor: statusStyle.bg, 
+                      color: statusStyle.color,
+                      border: `1px solid ${statusStyle.border}`
+                    }}>
+                      {project.status}
+                    </div>
+                    <div className="hours-badge">
+                      <span className="hours-icon">⏱</span>
+                      {project.hours_consumed || 0}h
+                    </div>
+                    <Button 
+                      className="view-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/projects/${project.id}`);
+                      }}
                     >
-                      {openAccordions[project.id] ? '▼' : '►'} {project.project_name}
+                      Open
                     </Button>
-                  </td>
-                  <td>{getStatusBadge(project.status)}</td>
-                  <td>{project.hours_consumed || 0} hrs</td>
-                  <td>{formatDate(project.start_date)}</td>
-                  <td>{formatDate(project.end_date)}</td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => navigate(`/projects/${project.id}`)}
-                    >
-                      View Details
-                    </Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan="6" className="p-0 border-0">
-                    <Collapse in={openAccordions[project.id]}>
-                      <div className="p-3 bg-light">
-                        <h6>Project Description</h6>
-                        <p>{project.project_description || 'No description provided.'}</p>
-                        {project.tasks && project.tasks.length > 0 && (
-                          <>
-                            <h6 className="mt-3">Tasks ({project.tasks.length})</h6>
-                            <Table size="sm" bordered className="mb-0">
-                              <thead>
-                                <tr>
-                                  <th>Task Name</th>
-                                  <th>Status</th>
-                                  <th>Assigned To</th>
-                                  <th>Hours</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {project.tasks.map((task) => (
-                                  <tr key={task.id}>
-                                    <td>{task.task_name}</td>
-                                    <td>{getStatusBadge(task.status)}</td>
-                                    <td>{task.user_assigned || 'Unassigned'}</td>
-                                    <td>{task.hours_consumed || 0} hrs</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </Table>
-                          </>
-                        )}
+                  </div>
+                </div>
+
+                <Collapse in={isOpen}>
+                  <div className="project-details">
+                    <div className="detail-section">
+                      <h4 className="detail-label">Description</h4>
+                      <p className="detail-text">{project.project_description || 'No description provided'}</p>
+                    </div>
+                    
+                    {project.tasks && project.tasks.length > 0 && (
+                      <div className="detail-section">
+                        <h4 className="detail-label">Tasks ({project.tasks.length})</h4>
+                        <div className="tasks-grid">
+                          {project.tasks.map((task) => {
+                            const taskStatusStyle = getStatusStyle(task.status);
+                            return (
+                              <div key={task.id} className="task-item">
+                                <div className="task-content">
+                                  <div className="task-name">{task.task_name}</div>
+                                  <div className="task-assigned">
+                                    {task.user_assigned || 'Unassigned'}
+                                  </div>
+                                </div>
+                                <div className="task-meta">
+                                  <span className="task-status" style={{
+                                    backgroundColor: taskStatusStyle.bg,
+                                    color: taskStatusStyle.color,
+                                    border: `1px solid ${taskStatusStyle.border}`
+                                  }}>
+                                    {task.status}
+                                  </span>
+                                  <span className="task-hours">{task.hours_consumed || 0}h</span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </Collapse>
-                  </td>
-                </tr>
-              </React.Fragment>
-            ))}
-          </tbody>
-        </Table>
+                    )}
+                  </div>
+                </Collapse>
+              </Card>
+            );
+          })}
+        </div>
       )}
     </Container>
   );
