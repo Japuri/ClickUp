@@ -1,7 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils import timezone
-from datetime import datetime
 from .models import Task
 
 
@@ -22,7 +21,10 @@ def calculate_task_hours(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Task)
 def update_project_hours(sender, instance, **kwargs):
+    from projects.models import Project
     project = instance.project
     total_hours = sum(task.hours_consumed for task in project.tasks.all())
-    project.hours_consumed = total_hours
-    project.save()
+    
+    if project.hours_consumed != total_hours:
+        Project.objects.filter(pk=project.pk).update(hours_consumed=total_hours)
+
