@@ -16,7 +16,6 @@ const TaskCreate = () => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.auth);
-  const { regularUsers } = useSelector((state) => state.users);
 
   const [formData, setFormData] = useState({
     task_name: '',
