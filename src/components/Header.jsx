@@ -61,12 +61,6 @@ function Header() {
             </Nav>
             
             <Nav className="user-section">
-              {user?.role === 'admin' && (
-                <button className="new-project-btn" onClick={() => navigate('/projects/create')}>
-                  <span className="btn-plus">+</span>
-                </button>
-              )}
-              
               <Dropdown align="end">
                 <Dropdown.Toggle className="user-dropdown" id="user-dropdown">
                   <div className="user-avatar">

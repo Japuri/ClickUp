@@ -99,20 +99,23 @@
 }
 
 .user-dropdown {
-  background: transparent;
-  border: none;
-  padding: 4px;
+  background: #1a1d29 !important;
+  border: 1px solid #2d3248 !important;
+  padding: 6px 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 8px;
-  color: #e4e6eb;
+  color: #e4e6eb !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .user-dropdown:hover {
-  background: #2d3248;
+  background: #242837 !important;
+  border-color: #3d4158 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .user-dropdown::after {
@@ -122,10 +125,10 @@
 .user-dropdown.show,
 .user-dropdown:focus,
 .user-dropdown:active {
-  background: #2d3248;
-  color: #e4e6eb;
-  box-shadow: none;
-  border: none;
+  background: #242837 !important;
+  border-color: #3d4158 !important;
+  color: #e4e6eb !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
 .user-avatar {
@@ -173,14 +176,14 @@
 .user-menu .dropdown-item {
   padding: 8px 12px;
   font-size: 14px;
-  color: #e4e6eb;
+  color: #1f2937 !important;
   border-radius: 4px;
   transition: all 0.2s;
 }
 
 .user-menu .dropdown-item:hover {
   background: #2d3248;
-  color: #e4e6eb;
+  color: #ffffff !important;
 }
 
 .user-menu .dropdown-divider {

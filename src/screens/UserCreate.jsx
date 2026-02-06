@@ -79,7 +79,11 @@ const UserCreate = () => {
       dispatch(createUserSuccess(data));
       navigate('/users');
     } catch (err) {
-      dispatch(createUserFailure(err.response?.data?.message || 'Failed to create user'));
+      console.error('User creation error:', err.response?.data);
+      const errorMessage = err.response?.data?.error 
+        || JSON.stringify(err.response?.data) 
+        || 'Failed to create user';
+      dispatch(createUserFailure(errorMessage));
     }
   };
 

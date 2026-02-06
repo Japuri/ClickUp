@@ -298,6 +298,19 @@
   margin-bottom: 0;
 }
 
+.field-input,
+.field-input:focus,
+.form-control,
+.form-control:focus {
+  color: #ffffff !important;
+  background: #1a1d29;
+}
+
+.field-input::placeholder,
+.form-control::placeholder {
+  color: #8b8d98;
+}
+
 @media (max-width: 768px) {
   .detail-header {
     padding: 16px 20px;
