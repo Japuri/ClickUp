@@ -1,53 +1,69 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
+import { logout } from "../redux/slices/authSlice";
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { Container, Row, Col } from "react-bootstrap";
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <header>
-      <Navbar expand="lg" bg="primary" variant="dark" collapseOnSelect>
+      <Navbar expand="lg" bg="primary" variant="dark">
         <Container fluid>
-          <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav
-              className="me-auto my-2 my-lg-0"
-              style={{ maxHeight: "100px" }}
-              navbarScroll
-            >
-              <Nav.Link href="#action1">Home</Nav.Link>
-              <Nav.Link href="#action2">Link</Nav.Link>
-              <NavDropdown title="Link" id="navbarScrollingDropdown">
-                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Another action
+          <Navbar.Brand onClick={() => navigate("/dashboard")} style={{ cursor: "pointer" }}>
+            Project Management
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link onClick={() => navigate("/dashboard")}>Dashboard</Nav.Link>
+              {user?.role === "admin" && (
+                <>
+                  <Nav.Link onClick={() => navigate("/projects/create")}>
+                    Create Project
+                  </Nav.Link>
+                  <Nav.Link onClick={() => navigate("/users")}>Users</Nav.Link>
+                  <Nav.Link onClick={() => navigate("/users/create")}>
+                    Create User
+                  </Nav.Link>
+                </>
+              )}
+            </Nav>
+            <Nav>
+              <NavDropdown
+                title={`${user?.first_name || "User"} (${user?.role || ""})`}
+                id="user-dropdown"
+                align="end"
+              >
+                <NavDropdown.Item disabled>
+                  {user?.email}
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">
-                  Something else here
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#" disabled>
-                Link
-              </Nav.Link>
             </Nav>
-            <Form className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="outline-success">Search</Button>
-            </Form>
           </Navbar.Collapse>
         </Container>
       </Navbar>
     </header>
+  );
+}
+
+export default Header;
   );
 }
 
