@@ -1,12 +1,12 @@
 .dashboard-container {
-  background: #f9fafb;
+  background: #1a1d29;
   min-height: calc(100vh - 60px);
   padding: 0;
 }
 
 .dashboard-header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: #242837;
+  border-bottom: 1px solid #2d3248;
   padding: 24px 32px;
   position: sticky;
   top: 60px;
@@ -24,14 +24,14 @@
 .dashboard-title {
   font-size: 28px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
   margin: 0;
   letter-spacing: -0.02em;
 }
 
 .dashboard-subtitle {
   font-size: 14px;
-  color: #6b7280;
+  color: #8b8d98;
   margin: 4px 0 0 0;
 }
 
@@ -81,12 +81,12 @@
 .empty-state h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
   margin-bottom: 8px;
 }
 
 .empty-state p {
-  color: #6b7280;
+  color: #8b8d98;
   margin-bottom: 0;
 }
 
@@ -97,8 +97,8 @@
 }
 
 .project-card {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: #242837;
+  border: 1px solid #2d3248;
   border-radius: 8px;
   margin-bottom: 12px;
   overflow: hidden;
@@ -106,8 +106,8 @@
 }
 
 .project-card:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-color: #3d4158;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .project-header {
@@ -141,14 +141,14 @@
 .project-name {
   font-size: 15px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
   margin: 0;
   line-height: 1.4;
 }
 
 .project-dates {
   font-size: 13px;
-  color: #6b7280;
+  color: #8b8d98;
   margin: 4px 0 0 0;
 }
 
@@ -171,10 +171,10 @@
   align-items: center;
   gap: 4px;
   padding: 4px 10px;
-  background: #f3f4f6;
+  background: #2d3248;
   border-radius: 6px;
   font-size: 13px;
-  color: #4b5563;
+  color: #b4b6c1;
   font-weight: 500;
 }
 
@@ -188,21 +188,21 @@
   font-weight: 500;
   background: transparent;
   color: #7b68ee;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #2d3248;
   border-radius: 6px;
   transition: all 0.2s;
 }
 
 .view-btn:hover {
-  background: #f9fafb;
+  background: #2d3248;
   border-color: #7b68ee;
   color: #6a5acd;
 }
 
 .project-details {
   padding: 0 20px 20px 48px;
-  border-top: 1px solid #f3f4f6;
-  background: #fafbfc;
+  border-top: 1px solid #2d3248;
+  background: #1f2230;
 }
 
 .detail-section {
@@ -212,7 +212,7 @@
 .detail-label {
   font-size: 13px;
   font-weight: 600;
-  color: #4b5563;
+  color: #8b8d98;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 8px;
@@ -220,7 +220,7 @@
 
 .detail-text {
   font-size: 14px;
-  color: #1f2937;
+  color: #e4e6eb;
   line-height: 1.6;
   margin: 0;
 }
@@ -235,15 +235,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: #242837;
+  border: 1px solid #2d3248;
   border-radius: 6px;
   transition: all 0.2s;
 }
 
 .task-item:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  border-color: #3d4158;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .task-content {
@@ -253,13 +253,13 @@
 .task-name {
   font-size: 14px;
   font-weight: 500;
-  color: #1f2937;
+  color: #e4e6eb;
   margin-bottom: 4px;
 }
 
 .task-assigned {
   font-size: 13px;
-  color: #6b7280;
+  color: #8b8d98;
 }
 
 .task-meta {
@@ -278,7 +278,7 @@
 
 .task-hours {
   font-size: 13px;
-  color: #6b7280;
+  color: #8b8d98;
   font-weight: 500;
   min-width: 40px;
   text-align: right;

@@ -1,6 +1,6 @@
 .custom-navbar {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: #242837;
+  border-bottom: 1px solid #2d3248;
   padding: 8px 0;
   position: sticky;
   top: 0;
@@ -20,14 +20,14 @@
   gap: 8px;
   font-size: 20px;
   font-weight: 700;
-  color: #1f2937;
+  color: #e4e6eb;
   cursor: pointer;
   text-decoration: none;
   transition: opacity 0.2s;
 }
 
 .brand-logo:hover {
-  color: #1f2937;
+  color: #e4e6eb;
   opacity: 0.8;
 }
 
@@ -47,7 +47,7 @@
 
 .nav-item {
   padding: 8px 16px;
-  color: #6b7280;
+  color: #e4e6eb !important;
   font-size: 14px;
   font-weight: 500;
   border-radius: 6px;
@@ -57,13 +57,13 @@
 }
 
 .nav-item:hover {
-  color: #1f2937;
-  background: #f3f4f6;
+  color: #ffffff !important;
+  background: #2d3248;
 }
 
 .nav-item.active {
-  color: #7b68ee;
-  background: #f5f3ff;
+  color: #7b68ee !important;
+  background: #2a2545;
 }
 
 .user-section {
@@ -108,11 +108,11 @@
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 8px;
-  color: #1f2937;
+  color: #e4e6eb;
 }
 
 .user-dropdown:hover {
-  background: #f3f4f6;
+  background: #2d3248;
 }
 
 .user-dropdown::after {
@@ -122,8 +122,8 @@
 .user-dropdown.show,
 .user-dropdown:focus,
 .user-dropdown:active {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: #2d3248;
+  color: #e4e6eb;
   box-shadow: none;
   border: none;
 }
@@ -151,40 +151,41 @@
 .user-name {
   font-size: 14px;
   font-weight: 500;
-  color: #1f2937;
+  color: #e4e6eb;
 }
 
 .user-role {
   font-size: 12px;
-  color: #6b7280;
+  color: #8b8d98;
   text-transform: capitalize;
 }
 
 .user-menu {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #2d3248;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   padding: 4px;
   min-width: 180px;
   margin-top: 8px;
+  background: #242837;
 }
 
 .user-menu .dropdown-item {
   padding: 8px 12px;
   font-size: 14px;
-  color: #1f2937;
+  color: #e4e6eb;
   border-radius: 4px;
   transition: all 0.2s;
 }
 
 .user-menu .dropdown-item:hover {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: #2d3248;
+  color: #e4e6eb;
 }
 
 .user-menu .dropdown-divider {
   margin: 4px 0;
-  border-color: #e5e7eb;
+  border-color: #2d3248;
 }
 
 .logout-item {
@@ -211,7 +212,7 @@
   .user-section {
     margin-left: 0;
     padding: 12px 0;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid #2d3248;
     width: 100%;
     justify-content: space-between;
   }

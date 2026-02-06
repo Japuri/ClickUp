@@ -1,6 +1,6 @@
 .app-footer {
-  background: white;
-  border-top: 1px solid #e5e7eb;
+  background: #242837;
+  border-top: 1px solid #2d3248;
   padding: 20px 32px;
   margin-top: auto;
 }
@@ -13,7 +13,7 @@
 
 .footer-text {
   font-size: 13px;
-  color: #6b7280;
+  color: #8b8d98;
   margin: 0;
 }
 

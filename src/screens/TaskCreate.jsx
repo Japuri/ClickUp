@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
-import { taskService, userService } from '../services/apiService';
+import { taskService, userService, projectService } from '../services/apiService';
 import {
   createTaskStart,
   createTaskSuccess,
@@ -19,6 +19,7 @@ const TaskCreate = () => {
   const { user } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
+    project_id: id || '',
     task_name: '',
     task_description: '',
     user_assigned: '',
@@ -28,9 +29,10 @@ const TaskCreate = () => {
 
   const [validationError, setValidationError] = useState('');
   const [availableUsers, setAvailableUsers] = useState([]);
+  const [availableProjects, setAvailableProjects] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       try {
         if (user?.role === 'manager') {
           const data = await userService.getRegularUsers();
@@ -43,13 +45,18 @@ const TaskCreate = () => {
           );
           setAvailableUsers(filteredUsers);
         }
+
+        if (!id) {
+          const projects = await projectService.getProjects();
+          setAvailableProjects(projects);
+        }
       } catch (err) {
-        console.error('Failed to fetch users:', err);
+        console.error('Failed to fetch data:', err);
       }
     };
 
-    fetchUsers();
-  }, [dispatch, user]);
+    fetchData();
+  }, [dispatch, user, id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,6 +75,11 @@ const TaskCreate = () => {
       return;
     }
 
+    if (!id && !formData.project_id) {
+      setValidationError('Please select a project');
+      return;
+    }
+
     if (!formData.start_date || !formData.end_date) {
       setValidationError('Start date and end date are required');
       return;
@@ -80,9 +92,10 @@ const TaskCreate = () => {
 
     dispatch(createTaskStart());
     try {
-      const data = await taskService.createTask(id, formData);
+      const projectId = id || formData.project_id;
+      const data = await taskService.createTask(projectId, formData);
       dispatch(createTaskSuccess(data));
-      navigate(`/projects/${id}`);
+      navigate(id ? `/projects/${id}` : '/dashboard');
     } catch (err) {
       dispatch(createTaskFailure(err.response?.data?.message || 'Failed to create task'));
     }
@@ -106,6 +119,28 @@ const TaskCreate = () => {
         )}
 
         <Form onSubmit={handleSubmit} className="modern-form">
+          {!id && (
+            <Form.Group className="form-field">
+              <Form.Label className="field-label">
+                Project <span className="required">*</span>
+              </Form.Label>
+              <Form.Select
+                name="project_id"
+                value={formData.project_id}
+                onChange={handleChange}
+                className="field-input"
+                required
+              >
+                <option value="">Select a project</option>
+                {availableProjects.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.project_name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          )}
+
           <Form.Group className="form-field">
             <Form.Label className="field-label">
               Task Name <span className="required">*</span>

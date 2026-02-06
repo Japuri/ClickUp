@@ -1,19 +1,19 @@
 .detail-container {
-  background: #f9fafb;
+  background: #1a1d29;
   min-height: calc(100vh - 60px);
   padding: 0;
 }
 
 .detail-header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: #242837;
+  border-bottom: 1px solid #2d3248;
   padding: 16px 32px;
 }
 
 .back-link {
   background: none;
   border: none;
-  color: #6b7280;
+  color: #8b8d98;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -22,7 +22,7 @@
 }
 
 .back-link:hover {
-  color: #1f2937;
+  color: #e4e6eb;
 }
 
 .loading-spinner {
@@ -46,11 +46,11 @@
 }
 
 .project-overview {
-  background: white;
+  background: #242837;
   border-radius: 8px;
   padding: 32px;
   margin-bottom: 24px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #2d3248;
 }
 
 .overview-header {
@@ -64,7 +64,7 @@
 .project-title {
   font-size: 32px;
   font-weight: 700;
-  color: #1f2937;
+  color: #e4e6eb;
   margin: 0 0 12px 0;
   letter-spacing: -0.02em;
 }
@@ -88,7 +88,7 @@
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: #4b5563;
+  color: #b4b6c1;
   font-weight: 500;
 }
 
@@ -130,15 +130,15 @@
 
 .info-card {
   padding: 20px;
-  background: #f9fafb;
+  background: #1a1d29;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #2d3248;
 }
 
 .info-label {
   font-size: 12px;
   font-weight: 600;
-  color: #6b7280;
+  color: #8b8d98;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 8px;
@@ -147,33 +147,33 @@
 .info-value {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
 }
 
 .description-section {
   padding-top: 24px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #2d3248;
 }
 
 .section-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
   margin-bottom: 12px;
 }
 
 .description-text {
   font-size: 15px;
-  color: #4b5563;
+  color: #b4b6c1;
   line-height: 1.6;
   margin: 0;
 }
 
 .tasks-section {
-  background: white;
+  background: #242837;
   border-radius: 8px;
   padding: 32px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #2d3248;
 }
 
 .tasks-header {
@@ -183,7 +183,7 @@
 .tasks-title {
   font-size: 20px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
   margin: 0;
 }
 
@@ -194,15 +194,15 @@
 
 .task-card {
   padding: 20px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #2d3248;
   border-radius: 8px;
-  background: #fafbfc;
+  background: #1a1d29;
   transition: all 0.2s;
 }
 
 .task-card:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-color: #3d4158;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .task-header-row {
@@ -216,7 +216,7 @@
 .task-name {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
   margin: 0;
   flex: 1;
 }
@@ -237,16 +237,16 @@
 
 .task-hours {
   padding: 4px 10px;
-  background: #f3f4f6;
+  background: #2d3248;
   border-radius: 6px;
   font-size: 13px;
-  color: #4b5563;
+  color: #b4b6c1;
   font-weight: 500;
 }
 
 .task-description {
   font-size: 14px;
-  color: #6b7280;
+  color: #8b8d98;
   margin-bottom: 12px;
   line-height: 1.5;
 }
@@ -256,7 +256,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 12px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #2d3248;
   font-size: 13px;
 }
 
@@ -264,7 +264,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #4b5563;
+  color: #b4b6c1;
   font-weight: 500;
 }
 
@@ -273,7 +273,7 @@
 }
 
 .task-dates {
-  color: #6b7280;
+  color: #8b8d98;
 }
 
 .empty-tasks {
@@ -289,12 +289,12 @@
 .empty-tasks h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #1f2937;
+  color: #e4e6eb;
   margin-bottom: 8px;
 }
 
 .empty-tasks p {
-  color: #6b7280;
+  color: #8b8d98;
   margin-bottom: 0;
 }
 

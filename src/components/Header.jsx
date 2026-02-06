@@ -27,7 +27,6 @@ function Header() {
       <Navbar className="custom-navbar" expand="lg">
         <Container fluid className="navbar-container">
           <Navbar.Brand onClick={() => navigate("/dashboard")} className="brand-logo">
-            <span className="logo-icon">⚡</span>
             <span className="logo-text">TaskFlow</span>
           </Navbar.Brand>
           

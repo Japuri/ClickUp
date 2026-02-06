@@ -71,6 +71,14 @@ function App() {
               }
             />
             <Route
+              path="/tasks/create"
+              element={
+                <ProtectedRoute allowedRoles={["admin", "manager"]}>
+                  <TaskCreate />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/users"
               element={
                 <ProtectedRoute allowedRoles={["admin"]}>
