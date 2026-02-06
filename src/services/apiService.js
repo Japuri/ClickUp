@@ -14,7 +14,7 @@ export const authService = {
 
 export const projectService = {
   getProjects: async () => {
-    const response = await api.get('/projects');
+    const response = await api.get('/projects/');
     return response.data;
   },
 
@@ -38,17 +38,17 @@ export const taskService = {
 
 export const userService = {
   getUsers: async () => {
-    const response = await api.get('/users');
+    const response = await api.get('/users/');
     return response.data;
   },
 
   getManagers: async () => {
-    const response = await api.get('/users?role=manager');
+    const response = await api.get('/users/?role=manager');
     return response.data;
   },
 
   getRegularUsers: async () => {
-    const response = await api.get('/users?role=user');
+    const response = await api.get('/users/?role=user');
     return response.data;
   },
 
