@@ -63,12 +63,14 @@ function Header() {
             <Nav className="user-section">
               <Dropdown align="end">
                 <Dropdown.Toggle className="user-dropdown" id="user-dropdown">
-                  <div className="user-avatar">
-                    {(user?.first_name || user?.username || "U").charAt(0).toUpperCase()}
-                  </div>
-                  <div className="user-info">
-                    <span className="user-name">{user?.first_name || user?.username}</span>
-                    <span className="user-role">{user?.role}</span>
+                  <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                    <div className="user-avatar">
+                      {(user?.first_name || user?.username || "U").charAt(0).toUpperCase()}
+                    </div>
+                    <div className="user-info">
+                      <span className="user-name">{user?.first_name || user?.username}</span>
+                      <span className="user-role">{user?.role}</span>
+                    </div>
                   </div>
                 </Dropdown.Toggle>
 

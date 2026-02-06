@@ -43,7 +43,6 @@ const Login = () => {
         <div className="login-card">
           <div className="login-header">
             <div className="login-logo">
-              <span className="logo-icon">⚡</span>
               <span className="logo-text">TaskFlow</span>
             </div>
             <h1 className="login-title">Welcome back</h1>
