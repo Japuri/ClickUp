@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Button, Badge } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import { projectService } from '../services/apiService';
 import {
   fetchProjectDetailStart,

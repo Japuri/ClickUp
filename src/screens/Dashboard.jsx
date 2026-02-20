@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Collapse, Button, Badge, Container, Row, Col, Card } from 'react-bootstrap';
+import { Collapse, Button, Container, Card } from 'react-bootstrap';
 import { projectService } from '../services/apiService';
 import {
   fetchProjectsStart,
